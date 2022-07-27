@@ -19,6 +19,7 @@ SELECT GENERATE_SERIES
      , CAST(floor(random() * 9000 + 1000) AS NUMERIC)
      , CAST(floor(random() * least((generate_series % 2)+0.2,1) * (generate_series-1000)/9000*29) AS NUMERIC)
      , 'junk'
+     delete
   FROM GENERATE_SERIES(1, 9000);
 
 VACUUM ANALYZE employees;;
