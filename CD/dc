@@ -1,0 +1,31 @@
+CREATE TABLE messages AS (
+SELECT GENERATE_SERIES::numeric id
+     , CASE WHEN random() < 0.01 THEN 'N' ELSE 'Y' END processed
+     , CAST(trunc(random() * 100) AS NUMERIC) receiver
+     , 'junk' message
+  FROM GENERATE_SERIES(0, 999999)
+);
+
+
+CREATE INDEX messages_todo
+          ON messages (receiver, processed);
+PREPARE stmt(int) AS
+ SELECT message
+   FROM messages
+  WHERE processed = 'N'
+    AND receiver  = $1;
+
+
+EXPLAIN EXECUTE stmt(1);
+CREATE INDEX messages_only_todo
+          ON messages (receiver)
+       WHERE processed = 'N';
+
+PREPARE stmt(int) AS
+ SELECT message
+   FROM messages
+  WHERE processed = 'N'
+    AND receiver  = $1;
+
+
+EXPLAIN EXECUTE stmt(1);
