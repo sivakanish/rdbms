@@ -22,6 +22,6 @@ create or replace function pg_temp.create_outbox_table(tablePrefix varchar, sche
         return 0;
     end;
   $body$
-  language 'plpgsql';
+  lgitanguage 'plpgsql';
 
 select pg_temp.create_outbox_table(@tablePrefix, @schema);
